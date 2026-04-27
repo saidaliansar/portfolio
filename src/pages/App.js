@@ -3,13 +3,11 @@ import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import ProjectDetails from "./pages/ProjectDetails";
 import Navbar from "./components/Navbar";
-
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 
-/* 🔥 Animated Routes */
 function AnimatedRoutes() {
   const location = useLocation();
 
@@ -28,18 +26,27 @@ function AnimatedRoutes() {
 
 function App() {
 
-  /* 🖱️ Cursor Glow */
+  // 🖱️ Smooth cursor glow
   useEffect(() => {
     const glow = document.querySelector(".cursor-glow");
 
+    let x = 0, y = 0;
+
     const move = (e) => {
+      x = e.clientX;
+      y = e.clientY;
+    };
+
+    const animate = () => {
       if (glow) {
-        glow.style.left = e.clientX + "px";
-        glow.style.top = e.clientY + "px";
+        glow.style.left = x + "px";
+        glow.style.top = y + "px";
       }
+      requestAnimationFrame(animate);
     };
 
     window.addEventListener("mousemove", move);
+    animate();
 
     return () => window.removeEventListener("mousemove", move);
   }, []);
@@ -47,20 +54,16 @@ function App() {
   return (
     <Router>
 
-      {/* 🖱️ Cursor Glow */}
+      {/* Cursor Glow */}
       <div className="cursor-glow"></div>
 
-      {/* 🌌 Background Glow */}
+      {/* Background Glow */}
       <div className="glow glow1"></div>
       <div className="glow glow2"></div>
 
-      {/* 🔝 Navbar */}
       <Navbar />
 
-      {/* ✅ MAIN CONTENT WRAPPER (FIXES OVERLAP) */}
-      <div className="main-content">
-        <AnimatedRoutes />
-      </div>
+      <AnimatedRoutes />
 
     </Router>
   );
